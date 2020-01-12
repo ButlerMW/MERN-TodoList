@@ -1,44 +1,35 @@
 import React, { useState } from 'react';
 
-const TodoForm = props => {
+const TodoForm = ({ submit }) => {
+    const [newTask, setNewTask] = useState({
+        text: "",
+        completed: false
+    });
 
-    const [state, setState] = useState({
-        text: ""
-    })
-
-    const handleChange = e => {
-        setState({
-            [e.target.name]: e.target.value
-        })
-    }
-   
-    const handleSubmit = e => {
-        e.preventDefault();
-        props.onSubmit({
-            // id
-            text: state.text,
-            complete: false
+    const onChangeHandler = e => {
+        setNewTask({
+            ...newTask,
+            text: e.target.value
         });
-        setState({
+    }
+
+    const onSubmit = () => {
+        submit(newTask);
+        setNewTask({
+            completed: false,
             text: ""
         });
-    }
+    };
 
     return(
-    <div>
-        <form onSubmit={handleSubmit}>
-            <input 
-                name="text"
-                value={state.text} 
-                onChange={handleChange} 
-                placeholder="Todo...."
-            />
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-    )
+        // <form onChange={onChangeHandler}>
+        <p>
+            <input placeholder="todo..." type="text" onChange={onChangeHandler} value={newTask.text} />
+            <button className="mx-1 btn btn-primary" onClick={onSubmit}>Add</button>
+        </p>
+        // </form>
+    );
 }
-
 export default TodoForm; 
 
 
